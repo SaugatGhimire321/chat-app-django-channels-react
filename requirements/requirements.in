@@ -3,7 +3,7 @@ backcall
 celery[redis]
 decorator
 Django
-channels
+channels[daphne]
 channels_redis
 django-cors-headers
 django-filter
