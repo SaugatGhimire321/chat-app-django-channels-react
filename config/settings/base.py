@@ -52,11 +52,13 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'corsheaders',
-    'django_filters'
+    'django_filters',
+    'channels',
 ]
 
 LOCAL_APPS = [
     'apps.users',
+    'apps.chats',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
