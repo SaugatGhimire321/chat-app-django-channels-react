@@ -14,7 +14,8 @@ class AuthService {
         password,
       }
     );
-    if (!response.data.token) {
+    console.log(response.data.access);
+    if (!response.data.access) {
       return response.data;
     }
     this.setUserInLocalStorage(response.data);

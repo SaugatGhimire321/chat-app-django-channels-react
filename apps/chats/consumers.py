@@ -12,6 +12,9 @@ class ChatConsumer(JsonWebsocketConsumer):
         self.room_name = None
  
     def connect(self):
+        self.user = self.scope["user"]
+        if not self.user.is_authenticated:
+            return
         print("Connected!")
         self.room_name = "home"
         self.accept()

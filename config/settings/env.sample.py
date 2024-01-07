@@ -36,3 +36,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+SECRET_KEY = 'w=2%0_pvo+k3#%-0q!4*)q54!3pm*!&%!hm&@3yr1)6m)85dqg'

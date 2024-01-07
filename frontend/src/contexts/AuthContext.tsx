@@ -30,6 +30,7 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
 
   async function login(email: string, password: string) {
     const data = await AuthService.Login(email, password);
+    console.log(data);
     setUser(data);
     return data;
   }
