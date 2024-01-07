@@ -1,6 +1,9 @@
 import { Link, Outlet } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
 
 export function Navbar() {
+  const { user, logout } = useContext(AuthContext);
   return (
     <>
       <nav className="bg-white border-gray-200 px-4 sm:px-6 py-2.5 rounded dark:bg-gray-800">
@@ -54,14 +57,23 @@ export function Navbar() {
                   Chats
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/login"
-                  className="block py-2 pr-4 pl-3 text-white md:p-0 dark:text-white"
-                >
-                  Login
-                </Link>
-              </li>
+              {!user ? (
+                <li>
+                  <Link to="/login" className="block py-2 pr-4 pl-3 md:p-0">
+                    Login
+                  </Link>
+                </li>
+              ) : (
+                <>
+                  <span className="">Logged in: {user.email}</span>
+                  <button
+                    className="block py-2 pr-4 pl-3 md:p-0"
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
             </ul>
           </div>
         </div>
