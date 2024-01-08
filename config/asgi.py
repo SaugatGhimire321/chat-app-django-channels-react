@@ -18,7 +18,7 @@ from apps.chats.middleware import JwtAuthMiddlewareStack
 # conversa_dj directory.
  
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
-sys.path.append(str(ROOT_DIR / "conversa_dj"))
+sys.path.append(str(ROOT_DIR / "config"))
  
 # If DJANGO_SETTINGS_MODULE is unset, default to the local settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")

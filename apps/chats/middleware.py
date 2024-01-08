@@ -36,7 +36,6 @@ class JwtAuthMiddleware(BaseMiddleware):
        # Close old database connections to prevent usage of timed out connections
         close_old_connections()
         # Get the token
-        import ipdb; ipdb.set_trace()
         token = parse_qs(scope["query_string"].decode())["token"][0]
         # import ipdb; ipdb.set_trace()
         # Try to authenticate the user
