@@ -61,7 +61,7 @@ class User(AbstractUser, BaseModel):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.full_name or self.email

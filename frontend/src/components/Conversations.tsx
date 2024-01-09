@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import { AuthContext } from "../contexts/AuthContext";
 
 interface UserResponse {
-    email: string;
+    username: string;
     name: string;
     url: string;
 }
@@ -17,9 +16,29 @@ export function Conversations() {
         async function fetchUsers() {
             const res = await fetch("http://127.0.0.1:8000/api/users/", {
                 headers: {
-                    Authorization: `Token ${user?.access}`
+                    Authorization: `Bearer ${user?.access}`
                 }
-            })
+            });
+            const data = await res.json();
+            setUsers(data)
         }
-    })
+        fetchUsers();
+    }, [user]);
+
+    function createConversationName(username: string) {
+        const namesAlph = [user?.username, username].sort();
+        return `${namesAlph[0]}__${namesAlph[1]}`
+    }
+
+    return (
+        <div>
+            {users
+            .filter((u) => u.username !== user?.username)
+            .map((u) => (
+            <Link to={`chats/${createConversationName(u.username)}`}>
+                <div key={u.username}>{u.username}</div>
+            </Link>
+            ))}
+        </div>
+    )
 }
