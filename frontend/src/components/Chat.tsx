@@ -29,8 +29,11 @@ export function Chat() {
             setWelcomeMessage(data.message);
             break;
           case "chat_message_echo":
-            console.log(data)
+            console.log(data);
             setMessageHistory((prev: any) => prev.concat(data.message));
+            break;
+          case "last_10_messages":
+            setMessageHistory(data.messages);
             break;
           default:
             console.log("Unknown Message type!");
@@ -56,7 +59,6 @@ export function Chat() {
     sendJsonMessage({
       type: "chat_message",
       message,
-      name,
     });
     setMessage("");
   }
