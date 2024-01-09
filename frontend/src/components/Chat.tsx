@@ -8,7 +8,6 @@ export function Chat() {
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [messageHistory, setMessageHistory] = useState<any>([]);
   const [message, setMessage] = useState("");
-  const [name, setName] = useState("");
   const { user } = useContext(AuthContext);
 
   const { readyState, sendJsonMessage } = useWebSocket(
@@ -30,7 +29,8 @@ export function Chat() {
             setWelcomeMessage(data.message);
             break;
           case "chat_message_echo":
-            setMessageHistory((prev: any) => prev.concat(data));
+            console.log(data)
+            setMessageHistory((prev: any) => prev.concat(data.message));
             break;
           default:
             console.log("Unknown Message type!");
@@ -52,17 +52,12 @@ export function Chat() {
     setMessage(e.target.value);
   }
 
-  function handleChangeName(e: any) {
-    setName(e.target.value);
-  }
-
   function handleSubmit() {
     sendJsonMessage({
       type: "chat_message",
       message,
       name,
     });
-    setName("");
     setMessage("");
   }
 
@@ -70,13 +65,6 @@ export function Chat() {
     <div>
       <span>The WebSocket is currently {connectionStatus}</span>
       <p>{welcomeMessage}</p>
-      <input
-        name="name"
-        placeholder="Name"
-        onChange={handleChangeName}
-        value={name}
-        className="shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md"
-      />
       <input
         name="message"
         placeholder="Message"
@@ -91,7 +79,7 @@ export function Chat() {
       <ul>
         {messageHistory.map((message: any, idx: number) => (
           <div className="border border-gray-200 py-3 px-3" key={idx}>
-            {message.name}: {message.message}
+            {message.from_user.username}: {message.content}
           </div>
         ))}
       </ul>
