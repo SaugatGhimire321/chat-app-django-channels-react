@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { AuthContext } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
+import { MessageModel } from "../models/Message";
+import { Message } from "./Message";
 
 export function Chat() {
   const { conversationName } = useParams();
@@ -79,10 +81,8 @@ export function Chat() {
       </button>
       <hr />
       <ul>
-        {messageHistory.map((message: any, idx: number) => (
-          <div className="border border-gray-200 py-3 px-3" key={idx}>
-            {message.from_user.username}: {message.content}
-          </div>
+        {messageHistory.map((message: MessageModel) => (
+          <Message key={message.id} message={message} />
         ))}
       </ul>
     </div>

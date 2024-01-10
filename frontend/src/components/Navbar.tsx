@@ -57,6 +57,15 @@ export function Navbar() {
                   Chats
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/conversations"
+                  className="block py-2 pr-4 pl-3md:p-0"
+                  aria-current="page"
+                >
+                  Active Conversations
+                </Link>
+              </li>
               {!user ? (
                 <li>
                   <Link to="/login" className="block py-2 pr-4 pl-3 md:p-0">
@@ -65,7 +74,7 @@ export function Navbar() {
                 </li>
               ) : (
                 <>
-                  <span className="">Logged in: {user.email}</span>
+                  <span className="">Logged in: {user.user.username}</span>
                   <button
                     className="block py-2 pr-4 pl-3 md:p-0"
                     onClick={logout}

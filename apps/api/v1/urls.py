@@ -4,4 +4,5 @@ app_name = "api_v1"
 
 urlpatterns = [
     path('user/', include('apps.users.api.v1.urls.users')),
+    path('conversations/', include('apps.chats.api.v1.urls.conversation')),
 ]
