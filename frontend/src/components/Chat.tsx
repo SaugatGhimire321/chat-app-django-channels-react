@@ -4,12 +4,18 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
 import { MessageModel } from "../models/Message";
 import { Message } from "./Message";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+import { ChatLoader } from "./ChatLoader";
 
 export function Chat() {
   const { conversationName } = useParams();
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [messageHistory, setMessageHistory] = useState<any>([]);
   const [message, setMessage] = useState("");
+  const [page, setPage] = useState(2);
+  const [hasMoreMessages, setHasMoreMessages] = useState(false);
+
   const { user } = useContext(AuthContext);
 
   const { readyState, sendJsonMessage } = useWebSocket(
@@ -32,10 +38,11 @@ export function Chat() {
             break;
           case "chat_message_echo":
             console.log(data);
-            setMessageHistory((prev: any) => prev.concat(data.message));
+            setMessageHistory((prev: any) => [data.message, ...prev]);
             break;
           case "last_10_messages":
             setMessageHistory(data.messages);
+            setHasMoreMessages(data.has_more);
             break;
           default:
             console.log("Unknown Message type!");
@@ -52,6 +59,31 @@ export function Chat() {
     [ReadyState.CLOSED]: "Closed",
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
+
+  async function fetchMessages() {
+    const apiRes = await fetch(
+      `http://127.0.0.1:8000/api/v1/messages/?conversation=${conversationName}&page=${page}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.access}`,
+        },
+      }
+    );
+    if (apiRes.status === 200) {
+      const data: {
+        count: number;
+        next: string | null;
+        previous: string | null;
+        results: MessageModel[];
+      } = await apiRes.json();
+      setHasMoreMessages(data.next !== null);
+      setPage(page + 1);
+      setMessageHistory((prev: MessageModel[]) => prev.concat(data.results));
+    }
+  }
 
   function handleChangeMessage(e: any) {
     setMessage(e.target.value);
@@ -81,9 +113,27 @@ export function Chat() {
       </button>
       <hr />
       <ul>
-        {messageHistory.map((message: MessageModel) => (
-          <Message key={message.id} message={message} />
-        ))}
+        <div
+          id="scrollableDiv"
+          className="h-[20rem] mt-3 flex flex-col-reverse relative w-full border border-gray-200 overflow-y-auto p-6"
+        >
+          <div>
+            {/* Put the scroll bar always on the bottom */}
+            <InfiniteScroll
+              dataLength={messageHistory.length}
+              next={fetchMessages}
+              className="flex flex-col-reverse" // To put endMessage and loader to the top
+              inverse={true}
+              hasMore={hasMoreMessages}
+              loader={<ChatLoader />}
+              scrollableTarget="scrollableDiv"
+            >
+              {messageHistory.map((message: MessageModel) => (
+                <Message key={message.id} message={message} />
+              ))}
+            </InfiniteScroll>
+          </div>
+        </div>
       </ul>
     </div>
   );
