@@ -36,44 +36,50 @@ export function Login() {
   }, [user]);
 
   return (
-    <div>
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h1 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h1>
-        </div>
-
-        <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
-          {error && <div>{JSON.stringify(error)}</div>}
-
-          <div className="-space-y-px rounded-md">
-            <input
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              type="text"
-              name="email"
-              placeholder="Email"
-              className="border-gray-300 text-gray-900 placeholder-gray-300 focus:ring-gray-500 focus:border-gray-500 block w-full pr-10 focus:outline-none sm:text-sm rounded-md"
-            />
-            <input
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              type="password"
-              name="password"
-              className="border-gray-300 text-gray-900 placeholder-gray-300 focus:ring-gray-500 focus:border-gray-500 block w-full pr-10 focus:outline-none sm:text-sm rounded-md"
-              placeholder="Password"
-            />
+    <section>
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[80vh] lg:py-0">
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Sign in to your account
+            </h1>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={formik.handleSubmit}
+            >
+              {error && <div>{JSON.stringify(error)}</div>}
+              <div>
+                <input
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="name@company.com"
+                />
+              </div>
+              <div>
+                <input
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-sky-600 hover:bg-sky-700"
+              >
+                {formik.isSubmitting ? "Signing in..." : "Sign in"}
+              </button>
+            </form>
           </div>
-
-          <button
-            type="submit"
-            className="group relative flex w-full justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
-          >
-            {formik.isSubmitting ? "Signing in..." : "Sign in"}
-          </button>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
