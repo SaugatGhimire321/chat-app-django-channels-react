@@ -18,6 +18,7 @@ export function ActiveConversations() {
         },
       });
       const data = await res.json();
+      console.log(data);
       setActiveConversations(data);
     }
     fetchUsers();

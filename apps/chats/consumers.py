@@ -42,7 +42,24 @@ class ChatConsumer(JsonWebsocketConsumer):
             self.conversation_name,
             self.channel_name,
         )
-        messages = self.conversation.messages.all().order_by("created_at")[0:10]
+
+        self.send_json(
+            {
+                "type": "online_user_list",
+                "users": [user.username for user in self.conversation.online.all()],
+            }
+        )
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.conversation_name,
+            {
+                "type": "user_join",
+                "user": self.user.username,
+            },
+        )
+        
+        self.conversation.online.add(self.user)
+        messages = self.conversation.messages.all().order_by("-created_at")[0:10]
         message_count = self.conversation.messages.all().count()
         self.send_json(
             {
@@ -53,7 +70,15 @@ class ChatConsumer(JsonWebsocketConsumer):
         )
  
     def disconnect(self, code):
-        print("Disconnected!")
+        if self.user.is_authenticated: # send the leave event to the room
+            async_to_sync(self.channel_layer.group_send)(
+                self.conversation_name,
+                {
+                "type": "user_leave",
+                "user": self.user.username,
+                },
+            )
+            self.conversation.online.remove(self.user)
         return super().disconnect(code)
  
     def receive_json(self, content, **kwargs):
@@ -69,14 +94,18 @@ class ChatConsumer(JsonWebsocketConsumer):
                 self.conversation_name,
                 {
                     "type": "chat_message_echo",
-                    "name": content["name"],
                     "message": MessageSerializer(message).data,
                 },
             )
         return super().receive_json(content, **kwargs)
     
     def chat_message_echo(self, event):
-        print(event)
+        self.send_json(event)
+
+    def user_join(self, event):
+        self.send_json(event)
+    
+    def user_leave(self, event):
         self.send_json(event)
     
     def get_receiver(self):
