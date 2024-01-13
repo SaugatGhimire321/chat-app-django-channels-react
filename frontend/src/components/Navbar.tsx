@@ -6,10 +6,10 @@ export function Navbar() {
   const { user, logout } = useContext(AuthContext);
   return (
     <>
-      <nav className="bg-white border-gray-200 px-4 sm:px-6 py-2.5 rounded dark:bg-gray-800">
+      <nav className="bg-slate-900 border-gray-200 px-4 sm:px-6 py-2.5 text-white">
         <div className="max-w-5xl mx-auto flex flex-wrap justify-between items-center">
           <Link to="/" className="flex items-center">
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="self-center text-xl font-semibold whitespace-nowrap">
               Chat App
             </span>
           </Link>
@@ -47,12 +47,12 @@ export function Navbar() {
             </svg>
           </button>
           <div className="hidden w-full md:block md:w-auto" id="mobile-menu">
-            <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-small">
               {user && (
                 <li>
                   <Link
                     to="/"
-                    className="block py-2 pr-4 pl-3 md:p-0"
+                    className="block hover:bg-slate-800 py-2 px-4 pl-3md:p-0"
                     aria-current="page"
                   >
                     Chats
@@ -63,7 +63,7 @@ export function Navbar() {
                 <li>
                   <Link
                     to="/conversations"
-                    className="block py-2 pr-4 pl-3md:p-0"
+                    className="block hover:bg-slate-800 py-2 px-4 pl-3md:p-0"
                     aria-current="page"
                   >
                     Active Conversations
@@ -72,15 +72,20 @@ export function Navbar() {
               )}
               {!user ? (
                 <li>
-                  <Link to="/login" className="block py-2 pr-4 pl-3 md:p-0">
+                  <Link
+                    to="/login"
+                    className="block hover:bg-slate-800 py-2 px-4 pl-3md:p-0"
+                  >
                     Login
                   </Link>
                 </li>
               ) : (
                 <>
-                  <span className="">Logged in: {user.user.username}</span>
+                  <span className="block py-2 pr-4 pl-3md:p-0">
+                    Logged in: {user.user.username}
+                  </span>
                   <button
-                    className="block py-2 pr-4 pl-3 md:p-0"
+                    className="block hover:bg-slate-800 py-2 px-4 pl-3md:p-0"
                     onClick={logout}
                   >
                     Logout

@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import datetime
 import os
+from decouple import config
+
+print(config('SECRET_KEY'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -163,3 +166,31 @@ ATTACHMENT_MAX_UPLOAD_SIZE = 2 * 1024 * 1024
 ASGI_APPLICATION = "config.asgi.application"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(weeks=520),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=3),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': config('SECRET_KEY'),
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=3),
+}
