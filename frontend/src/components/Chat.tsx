@@ -147,7 +147,7 @@ export function Chat() {
     <div>
       <span>The WebSocket is currently {connectionStatus}</span>
       {conversation && (
-        <div className="py-6">
+        <div className="py-4">
           <h3 className="text-3xl font-semibold text-gray-900">
             Chat with user: {conversation.other_user.username}
           </h3>
@@ -159,21 +159,11 @@ export function Chat() {
           </span>
         </div>
       )}
-      <input
-        name="message"
-        placeholder="Message"
-        onChange={handleChangeMessage}
-        value={message}
-        className="ml-2 shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md"
-      />
-      <button className="ml-3 bg-gray-300 px-3 py-1" onClick={handleSubmit}>
-        Submit
-      </button>
       <hr />
       <ul>
         <div
           id="scrollableDiv"
-          className="h-[20rem] mt-3 flex flex-col-reverse relative w-full border border-gray-200 overflow-y-auto p-6"
+          className="h-[20rem] mt-3 flex flex-col-reverse relative w-full border border-gray-200 overflow-y-scroll p-6"
         >
           <div>
             {/* Put the scroll bar always on the bottom */}
@@ -185,6 +175,7 @@ export function Chat() {
               hasMore={hasMoreMessages}
               loader={<ChatLoader />}
               scrollableTarget="scrollableDiv"
+              style={{ overflowY: 'hidden' }}
             >
               {messageHistory.map((message: MessageModel) => (
                 <Message key={message.id} message={message} />
@@ -193,6 +184,18 @@ export function Chat() {
           </div>
         </div>
       </ul>
+      <div className="flex justify-end mt-2">
+        <input
+          name="message"
+          placeholder="Message"
+          onChange={handleChangeMessage}
+          value={message}
+          className="ml-2 px-1 shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md"
+        />
+        <button className="ml-3 bg-gray-300 px-3 py-1 rounded-sm" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 }

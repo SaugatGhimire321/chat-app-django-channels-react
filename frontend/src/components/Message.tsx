@@ -12,7 +12,7 @@ export function Message({ message }: { message: MessageModel }) {
 
   function formatMessageTimestamp(created_at: string) {
     const date = new Date(created_at);
-    return date.toLocaleTimeString().slice(0, 5);
+    return date.toLocaleTimeString().slice(0, 4);
   }
 
   return (
