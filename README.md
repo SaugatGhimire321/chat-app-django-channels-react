@@ -1,4 +1,4 @@
-### Create django project with custom user and readymade authenticated url
+### Create a chat app with DRF/Channels and React
 
 ##### Clone this project
 ```sh
@@ -72,3 +72,5 @@ npm install
 ```sh
 npm run dev
 ```
+
+##### DRF Template - https://github.com/Bindeep/api-template
